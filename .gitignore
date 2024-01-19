@@ -6,6 +6,10 @@ __pycache__/
 # C extensions
 *.so
 
+# User defined
+**/ny_taxi_postgres_data/
+*.csv
+
 # Distribution / packaging
 .Python
 build/
