@@ -9,6 +9,7 @@ __pycache__/
 # User defined
 **/ny_taxi_postgres_data/
 *.csv
+*.parquet
 
 # Distribution / packaging
 .Python
