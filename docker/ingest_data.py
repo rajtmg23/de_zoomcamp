@@ -41,11 +41,11 @@ def main(params):
     df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
 
     print(f"Creating table {table_name}.")
-    df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace')
+    df.head(n=0).to_sql(name=table_name, con=engine, if_exists='replace', index=False)
     print(f"{table_name} table successfully created.")
     
     print(f"Writing datas to table.... {table_name}.")
-    df.to_sql(name=table_name, con=engine, if_exists='append')
+    df.to_sql(name=table_name, con=engine, if_exists='append', index=False)
 
 
     while True:
@@ -56,7 +56,7 @@ def main(params):
             df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
             df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
 
-            df.to_sql(name=table_name, con=engine, if_exists='append')
+            df.to_sql(name=table_name, con=engine, if_exists='append', index=False)
 
             t_end = time()
 

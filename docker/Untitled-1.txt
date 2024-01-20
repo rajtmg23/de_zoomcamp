@@ -57,7 +57,7 @@ python ingest_data.py \
   --port=5432 \
   --db=ny_taxi \
   --table_name=yellow_taxi_trips \
-  --url=${URL}
+  --url="http://172.17.0.1:8000/yellow_tripdata_2021-01.csv"
 
 
 python ingest_data.py \
@@ -96,3 +96,19 @@ docker run -it \
     --db=ny_taxi \
     --table_name=yellow_taxi_trips \
     --url="http://172.17.0.1:8000/yellow_tripdata_2021-01.csv"
+
+
+docker-compose up
+docker-compose down
+
+docker-compose up -d
+
+python ingest_data.py \
+  --user=root \
+  --password=root \
+  --host=pgdatabase \
+  --port=5432 \
+  --db=ny_taxi \
+  --table_name=yellow_taxi_trips \
+  --url="http://172.17.0.1:8000/yellow_tripdata_2021-01.csv"
+
