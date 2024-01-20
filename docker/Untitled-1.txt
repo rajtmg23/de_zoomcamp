@@ -57,7 +57,7 @@ python ingest_data.py \
   --port=5432 \
   --db=ny_taxi \
   --table_name=yellow_taxi_trips \
-  --url=${URL} \
+  --url=${URL}
 
 
 python ingest_data.py \
@@ -70,3 +70,29 @@ python ingest_data.py \
 
 
 docker build -t taxi_ingest:v001 .
+
+python -m http.server
+
+URL="http://172.17.0.1:8000/yellow_tripdata_2021-01.csv"
+
+docker run -it \
+  --network=pg-network \
+  taxi_ingest:v001 \
+    --user=root \
+    --password=root \
+    --host=pg-database \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=yellow_taxi_trips
+    --url=${URL}
+
+docker run -it \
+  --network=pg-network \
+  taxi_ingest:v001 \
+    --user=root \
+    --password=root \
+    --host=pg-database \
+    --port=5432 \
+    --db=ny_taxi \
+    --table_name=yellow_taxi_trips \
+    --url="http://172.17.0.1:8000/yellow_tripdata_2021-01.csv"

@@ -17,10 +17,10 @@ def main(params):
     db = params.db
     table_name = params.table_name
     url = params.url
-    csv_name = "yellow_tripdata_2021-01.csv"
+    csv_name = "output.csv"
 
     # download the csv
-    # os.system(f"wget {url} -O {csv_name}")
+    os.system(f"wget {url} -O {csv_name}")
 
 
     # Creating connection to the POSTGRESQL
@@ -49,17 +49,22 @@ def main(params):
 
 
     while True:
-        t_start = time()
+        try:
+            t_start = time()
 
-        df = next(df_iter)
-        df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
-        df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
+            df = next(df_iter)
+            df.tpep_dropoff_datetime = pd.to_datetime(df.tpep_dropoff_datetime)
+            df.tpep_pickup_datetime = pd.to_datetime(df.tpep_pickup_datetime)
 
-        df.to_sql(name=table_name, con=engine, if_exists='append')
+            df.to_sql(name=table_name, con=engine, if_exists='append')
 
-        t_end = time()
+            t_end = time()
 
-        print("Inserted another chunk, took %.3f second" % (t_end - t_start))
+            print("Inserted another chunk, took %.3f second" % (t_end - t_start))
+            
+        except StopIteration:
+            print('completed')
+            break
 
 
 if __name__ == "__main__": 
