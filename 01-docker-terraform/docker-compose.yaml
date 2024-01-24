@@ -3,7 +3,7 @@ services:
     image: postgres:13
     environment:
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB="y_taxi
+      - POSTGRES_DB=ny_taxi
       - POSTGRES_USER=root
     volumes:
       - "./ny_taxi_postgres_data:/var/lib/postgresql/data:rw"
