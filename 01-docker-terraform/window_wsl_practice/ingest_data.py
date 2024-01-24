@@ -17,7 +17,7 @@ def main(params):
     db = params.db
     table_name = params.table_name
     url = params.url
-    csv_name = "output.csv.gz"
+    csv_name = "output.csv"
 
     # download the csv
     os.system(f"wget {url} -O {csv_name}")
