@@ -10,7 +10,7 @@ and practice with Docker and SQL
 
 Run the command to get information on Docker 
 
-```docker --help```
+`docker --help`
 
 Now run the command to get help on the "docker build" command:
 
@@ -25,7 +25,7 @@ Which tag has the following text? - *Automatically remove the container when it 
 - `--rmc`
 - `--rm`
 
-
+` Answer: --rm`
 ## Question 2. Understanding docker first run 
 
 Run docker with the python:3.9 image in an interactive mode and the entrypoint of bash.
@@ -38,6 +38,7 @@ What is version of the package *wheel* ?
 - 23.0.1
 - 58.1.0
 
+`Answer: 0.42.0 `
 
 # Prepare Postgres
 
@@ -52,6 +53,9 @@ You will also need the dataset with zones:
 
 Download this data and put it into Postgres (with jupyter notebooks or with a pipeline)
 
+**Code for writing data to the database.**
+- [Jupyter Notebook File for storing zones data.](https://github.com/rajtmg23/de_zoomcamp/blob/main/01-docker-terraform/window_wsl_practice/docker/upload_zone_data.ipynb)
+- [Jupyter Notebook File for storing green tripdata](https://github.com/rajtmg23/de_zoomcamp/blob/main/01-docker-terraform/window_wsl_practice/docker/upload_green_trip_data.ipynb)
 
 ## Question 3. Count records 
 
@@ -66,6 +70,14 @@ Remember that `lpep_pickup_datetime` and `lpep_dropoff_datetime` columns are in 
 - 15859
 - 89009
 
+`Answer: 15612`
+```sql
+SELECT COUNT(*) AS trip_count
+FROM green_taxi_data gt
+WHERE CAST(gt.lpep_pickup_datetime AS DATE) = '2019-09-18'
+  AND CAST(gt.lpep_dropoff_datetime AS DATE) = '2019-09-18';
+```
+
 ## Question 4. Largest trip for each day
 
 Which was the pick up day with the largest trip distance
@@ -75,6 +87,17 @@ Use the pick up time for your calculations.
 - 2019-09-16
 - 2019-09-26
 - 2019-09-21
+
+`Answer: 2019-09-26`
+```sql
+SELECT 
+    CAST(lpep_pickup_datetime AS DATE), 
+    MAX(trip_distance)
+FROM
+    green_taxi_data
+GROUP BY CAST(lpep_pickup_datetime AS DATE)
+ORDER BY 2 DESC LIMIT 1;
+```
 
 
 ## Question 5. Three biggest pick up Boroughs
@@ -88,6 +111,26 @@ Which were the 3 pick up Boroughs that had a sum of total_amount superior to 500
 - "Bronx" "Manhattan" "Queens" 
 - "Brooklyn" "Queens" "Staten Island"
 
+`Answer: "Brooklyn" "Manhattan" "Queens"`
+```sql
+SELECT
+    tz."Borough" AS pickup_borough,
+    SUM(gt.total_amount) AS total_amount
+FROM
+    green_taxi_data gt
+JOIN
+    taxi_zones tz ON gt."PULocationID" = tz."LocationID"
+WHERE
+    DATE(gt.lpep_pickup_datetime) = '2019-09-18'
+    AND tz."Borough" != 'Unknown'
+GROUP BY
+    tz."Borough"
+HAVING
+    SUM(gt.total_amount) > 50000
+ORDER BY
+    total_amount DESC
+LIMIT 3;
+```
 
 ## Question 6. Largest tip
 
@@ -101,7 +144,21 @@ Note: it's not a typo, it's `tip` , not `trip`
 - JFK Airport
 - Long Island City/Queens Plaza
 
+`Answer: JFK Airport`
 
+```sql
+SELECT 
+    tz_dropoff."Zone" AS dropoff_zone_name,
+    MAX(gt.tip_amount) AS largest_tip_amount
+FROM green_taxi_data gt
+JOIN taxi_zones tz_pickup ON gt."PULocationID" = tz_pickup."LocationID"
+JOIN taxi_zones tz_dropoff ON gt."DOLocationID" = tz_dropoff."LocationID"
+WHERE TO_CHAR(gt.lpep_pickup_datetime, 'YYYY-MM') = '2019-09'
+    AND tz_pickup."Zone" = 'Astoria'
+GROUP BY tz_dropoff."Zone"
+ORDER BY largest_tip_amount DESC
+LIMIT 1;
+```
 
 ## Terraform
 
@@ -123,11 +180,3 @@ terraform apply
 ```
 
 Paste the output of this command into the homework submission form.
-
-
-## Submitting the solutions
-
-* Form for submitting: https://courses.datatalks.club/de-zoomcamp-2024/homework/hw01
-* You can submit your homework multiple times. In this case, only the last submission will be used. 
-
-Deadline: 29 January, 23:00 CET
