@@ -1,6 +1,8 @@
 # Data Engineering Zoomcamp
 
-Syllabus
+**This repo contains homework and notes for the [Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp) by [Datatalks.Club](https://datatalks.club/).**
+
+## Syllabus
 
 * [Module 1: Containerization and Infrastructure as Code](#module-1-containerization-and-infrastructure-as-code)
 * [Module 2: Workflow Orchestration](#module-2-workflow-orchestration)
@@ -12,9 +14,7 @@ Syllabus
 * [Workshop 2: Stream Processing with SQL](#workshop-2-stream-processing-with-sql)
 * [Project](#project)
 
-## Taking the course
-
-## Syllabus
+## Details on Syllabus
 
 ### [Module 1: Containerization and Infrastructure as Code](01-docker-terraform/)
 

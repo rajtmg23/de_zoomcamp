@@ -1,6 +1,6 @@
 ## Creating volume for windows wsl:
 ```bash
-docker volume Create --name dtc_postgres_volume_local -d local
+docker volume create --name dtc_postgres_volume_local -d local
 ```
 ## Running Postgres server with the necessary env info:
 ```bash
@@ -184,7 +184,7 @@ python ingest_data.py \
   --port=5432 \
   --db=ny_taxi \
   --table_name=yellow_taxi_trips \
-  --url="http://172.18.88.69:8000/ubuntu_virtualbox/yellow_tripdata_2021-01.csv"
+  --url="http://172.18.88.69:8000/de_zoomcamp/01-docker-terraform/ubuntu_virtualbox/docker/yellow_tripdata_2021-01.csv"
 ```
 **If all things goes the desired way then we can build a docker image with the following docker file. The code for docker file is given below:**
 ```docker
